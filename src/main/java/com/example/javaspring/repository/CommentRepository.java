@@ -12,8 +12,6 @@ import java.util.UUID;
 @Repository
 public interface CommentRepository extends BaseRepository<Comment> {
 
-    // ========== BASIC QUERIES ==========
-
     List<Comment> findByTaskId(UUID taskId);
 
     List<Comment> findByAuthorId(UUID authorId);
@@ -21,8 +19,6 @@ public interface CommentRepository extends BaseRepository<Comment> {
     List<Comment> findByTaskIdOrderByCreatedAtAsc(UUID taskId);
 
     List<Comment> findByTaskIdOrderByCreatedAtDesc(UUID taskId);
-
-    // ========== SEARCH QUERIES ==========
 
     @Query("SELECT c FROM Comment c WHERE c.task.id = :taskId AND " +
             "LOWER(c.content) LIKE LOWER(CONCAT('%', :search, '%'))")
@@ -32,16 +28,12 @@ public interface CommentRepository extends BaseRepository<Comment> {
             "LOWER(c.content) LIKE LOWER(CONCAT('%', :search, '%'))")
     List<Comment> searchComments(@Param("search") String search);
 
-    // ========== TIME BASED QUERIES ==========
-
     List<Comment> findByCreatedAtAfter(LocalDateTime date);
 
     List<Comment> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 
     @Query("SELECT c FROM Comment c WHERE c.task.id = :taskId AND c.createdAt >= :date")
     List<Comment> findRecentCommentsByTask(@Param("taskId") UUID taskId, @Param("date") LocalDateTime date);
-
-    // ========== STATISTICS ==========
 
     @Query("SELECT COUNT(c) FROM Comment c WHERE c.task.id = :taskId")
     long countByTaskId(@Param("taskId") UUID taskId);
@@ -55,15 +47,11 @@ public interface CommentRepository extends BaseRepository<Comment> {
     @Query("SELECT COUNT(c) FROM Comment c WHERE c.createdAt >= :date")
     long countCommentsCreatedAfter(@Param("date") LocalDateTime date);
 
-    // ========== PROJECT RELATED ==========
-
     @Query("SELECT c FROM Comment c WHERE c.task.project.id = :projectId ORDER BY c.createdAt DESC")
     List<Comment> findRecentCommentsByProject(@Param("projectId") UUID projectId);
 
     @Query("SELECT c FROM Comment c WHERE c.task.project.id = :projectId AND c.author.id = :authorId")
     List<Comment> findByProjectAndAuthor(@Param("projectId") UUID projectId, @Param("authorId") UUID authorId);
-
-    // ========== AUTHOR ACTIVITY ==========
 
     @Query("SELECT c FROM Comment c WHERE c.author.id = :authorId ORDER BY c.createdAt DESC")
     List<Comment> findRecentCommentsByAuthor(@Param("authorId") UUID authorId);

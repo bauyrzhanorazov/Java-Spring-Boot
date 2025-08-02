@@ -36,8 +36,6 @@ public interface UserRepository extends BaseRepository<User> {
     @Query("SELECT COUNT(u) FROM User u JOIN u.roles r WHERE r = :role")
     long countByRole(@Param("role") Role role);
 
-    // ========== PROJECT RELATED ==========
-
     @Query("SELECT DISTINCT u FROM User u JOIN u.memberProjects p WHERE p.id = :projectId")
     List<User> findByProjectId(@Param("projectId") UUID projectId);
 
