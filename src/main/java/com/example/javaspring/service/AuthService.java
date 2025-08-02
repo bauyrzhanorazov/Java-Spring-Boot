@@ -21,7 +21,7 @@ public interface AuthService {
 
     boolean isTokenExpired(String token);
 
-    void invalidateToken(String token);
+    boolean invalidateToken(String token);
 
     void changePassword(String username, String oldPassword, String newPassword);
 

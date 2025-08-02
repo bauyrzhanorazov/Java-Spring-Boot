@@ -4,5 +4,6 @@ public enum Role {
     ADMIN,
     PROJECT_MANAGER,
     DEVELOPER,
-    VIEWER
+    VIEWER,
+    USER
 }

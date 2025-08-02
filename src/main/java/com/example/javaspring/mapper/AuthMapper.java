@@ -9,10 +9,23 @@ import org.mapstruct.MappingConstants;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, uses = {UserMapper.class})
 public interface AuthMapper {
 
-    @Mapping(target = "accessToken", source = "accessToken")
-    @Mapping(target = "refreshToken", source = "refreshToken")
-    @Mapping(target = "tokenType", constant = "Bearer")
-    @Mapping(target = "expiresIn", source = "expiresIn")
-    @Mapping(target = "user", source = "user")
-    AuthResponse toAuthResponse(String accessToken, String refreshToken, Long expiresIn, User user);
+    default AuthResponse toAuthResponse(String accessToken, String refreshToken, Long expiresIn, User user) {
+        return AuthResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .tokenType("Bearer")
+                .expiresIn(expiresIn)
+                .user(user != null ? toUserSummary(user) : null)
+                .build();
+    }
+
+    // Helper method to create user summary
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "username", source = "username")
+    @Mapping(target = "email", source = "email")
+    @Mapping(target = "firstName", source = "firstName")
+    @Mapping(target = "lastName", source = "lastName")
+    @Mapping(target = "roles", source = "roles")
+    @Mapping(target = "enabled", source = "enabled")
+    AuthResponse.UserSummary toUserSummary(User user);
 }

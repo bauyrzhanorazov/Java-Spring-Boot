@@ -25,8 +25,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // ========== SECURITY FILTER CHAIN ==========
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -62,14 +60,13 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // Configure headers
+                // Configure headers (исправить deprecated)
                 .headers(headers -> headers
-                        .frameOptions().sameOrigin() // For H2 console
+                        .frameOptions(frameOptions -> frameOptions.sameOrigin()) // Исправлено
                 );
 
         return http.build();
     }
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
