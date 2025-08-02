@@ -3,6 +3,8 @@ package com.example.javaspring.repository;
 import com.example.javaspring.entity.Task;
 import com.example.javaspring.enums.TaskPriority;
 import com.example.javaspring.enums.TaskStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -15,6 +17,16 @@ import java.util.UUID;
 public interface TaskRepository extends BaseRepository<Task> {
 
     List<Task> findByProjectId(UUID projectId);
+
+    Page<Task> findByProjectId(UUID projectId, Pageable pageable);
+
+    Page<Task> findByAssigneeId(UUID assigneeId, Pageable pageable);
+
+    Page<Task> findByReporterId(UUID reporterId, Pageable pageable);
+
+    Page<Task> findByStatus(TaskStatus status, Pageable pageable);
+
+    Page<Task> findByPriority(TaskPriority priority, Pageable pageable);
 
     List<Task> findByAssigneeId(UUID assigneeId);
 

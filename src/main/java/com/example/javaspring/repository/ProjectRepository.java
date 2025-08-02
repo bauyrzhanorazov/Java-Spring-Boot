@@ -2,6 +2,8 @@ package com.example.javaspring.repository;
 
 import com.example.javaspring.entity.Project;
 import com.example.javaspring.enums.ProjectStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -16,6 +18,10 @@ public interface ProjectRepository extends BaseRepository<Project> {
     List<Project> findByStatus(ProjectStatus status);
 
     List<Project> findByOwnerId(UUID ownerId);
+
+    Page<Project> findByOwnerId(UUID ownerId, Pageable pageable);
+
+    Page<Project> findByStatus(ProjectStatus status, Pageable pageable);
 
     @Query("SELECT DISTINCT p FROM Project p JOIN p.members m WHERE m.id = :userId")
     List<Project> findByMemberId(@Param("userId") UUID userId);

@@ -1,6 +1,8 @@
 package com.example.javaspring.repository;
 
 import com.example.javaspring.entity.Comment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -15,6 +17,10 @@ public interface CommentRepository extends BaseRepository<Comment> {
     List<Comment> findByTaskId(UUID taskId);
 
     List<Comment> findByAuthorId(UUID authorId);
+
+    Page<Comment> findByTaskId(UUID taskId, Pageable pageable);
+
+    Page<Comment> findByAuthorId(UUID authorId, Pageable pageable);
 
     List<Comment> findByTaskIdOrderByCreatedAtAsc(UUID taskId);
 
